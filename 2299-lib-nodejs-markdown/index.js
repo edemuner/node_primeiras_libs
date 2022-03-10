@@ -5,12 +5,22 @@ function treatError(error){
   throw new Error(chalk.red(error.code, 'File not found'))
 }
 
-function getFile(filePath){
+async function getFile(filePath){
   const encoding = 'utf-8'
-  fs.promises.readFile(filePath, encoding)
-    .then((text) => chalk.green(console.log(text)))
-    .catch((error) => treatError(error))
+  try{
+    const text = await fs.promises.readFile(filePath, encoding)
+    console.group(chalk.green(text))  
+  } catch(error){
+    treatError(error)
+  }
 }
+
+// function getFile(filePath){
+//   const encoding = 'utf-8'
+//   fs.promises.readFile(filePath, encoding)
+//     .then((text) => chalk.green(console.log(text)))
+//     .catch((error) => treatError(error))
+// }
 
 // function getFile(filePath){
 //   const encoding = 'utf-8'
@@ -23,4 +33,4 @@ function getFile(filePath){
 // }
 
 
-getFile('./files/texto.md')
+getFile('./files/text.md')
