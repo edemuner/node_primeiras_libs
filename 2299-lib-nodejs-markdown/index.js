@@ -7,13 +7,20 @@ function treatError(error){
 
 function getFile(filePath){
   const encoding = 'utf-8'
-  fs.readFile(filePath, encoding, (err, data) => {
-    if (err){
-      treatError(err)
-    }
-    console.log(chalk.green(data))
-  })
+  fs.promises.readFile(filePath, encoding)
+    .then((text) => chalk.green(console.log(text)))
+    .catch((error) => treatError(error))
 }
 
+// function getFile(filePath){
+//   const encoding = 'utf-8'
+//   fs.readFile(filePath, encoding, (err, data) => {
+//     if (err){
+//       treatError(err)
+//     }
+//     console.log(chalk.green(data))
+//   })
+// }
 
-getFile('./files/text.md')
+
+getFile('./files/texto.md')
