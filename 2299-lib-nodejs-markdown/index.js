@@ -3,7 +3,7 @@ const fs = require('fs')
 
 
 function extractLinks(text){
-  const regex = /\[([^\]]*)\]\((https?:\/\/[^\s]*.[^\s]*)\)/gm;
+  const regex = /\[([^\]]*)\]\((https?:\/\/[^\s]*.[^\s]*)\)/gm
   const resultsAray = []
   let temp
 
@@ -22,7 +22,7 @@ async function getFile(filePath){
   const encoding = 'utf-8'
   try{
     const text = await fs.promises.readFile(filePath, encoding)
-    console.log(extractLinks(chalk.green(text)))  
+    console.log(extractLinks(text))  
   } catch(error){
     treatError(error)
   }
@@ -47,3 +47,5 @@ async function getFile(filePath){
 
 
 getFile('./files/text.md')
+
+module.exports = getFile
