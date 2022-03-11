@@ -1,5 +1,6 @@
 const chalk = require('chalk');
 const fs = require('fs')
+const path = require('path')
 
 
 function extractLinks(text){
@@ -19,10 +20,21 @@ function treatError(error){
 
 
 async function getFile(filePath){
+  const absolutePath = path.join(__dirname, filePath)
   const encoding = 'utf-8'
-  try{
-    const text = await fs.promises.readFile(filePath, encoding)
-    return extractLinks(text)
+
+  try {
+    const files = await fs.promises.readdir(absolutePath, {encoding})
+    // map is synchronous, it is told to make promises for each item in the array
+    // but it just return the promises, it doesn't wait until each promise is resolved or rejected
+    // so Promise.all makes it wait until all the promises are concluded, and
+    // returns an array of results, instead of an array of promises
+    const result = Promise.all(files.map(async (file) => {
+      const filePath = `${absolutePath}/${file}`
+      const text = await fs.promises.readFile(filePath, encoding)
+      return extractLinks(text)
+    }))
+    return result
   } catch(error){
     treatError(error)
   }
