@@ -10,7 +10,7 @@ function extractLinks(text){
   while((temp = regex.exec(text)) !== null){
     resultsAray.push({ [temp[1]]: temp[2] })
   }
-  return resultsAray
+  return resultsAray.length === 0 ? 'No links' : resultsAray
 }
 
 function treatError(error){
@@ -22,7 +22,7 @@ async function getFile(filePath){
   const encoding = 'utf-8'
   try{
     const text = await fs.promises.readFile(filePath, encoding)
-    console.log(extractLinks(text))  
+    return extractLinks(text)
   } catch(error){
     treatError(error)
   }
@@ -46,6 +46,6 @@ async function getFile(filePath){
 // }
 
 
-getFile('./files/text.md')
+// getFile('./files/text.md')
 
 module.exports = getFile
