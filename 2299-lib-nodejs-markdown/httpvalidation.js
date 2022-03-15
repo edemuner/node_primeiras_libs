@@ -1,10 +1,29 @@
-function generateUrlsArray(linkArray){
-    console.log(linkArray)
-    return linkArray.map(linkObject => Object.values(linkObject).join())
+const fetch = (...args) => import('node-fetch')
+    .then(({default: fetch}) => 
+        fetch(...args))
+
+async function checkStatus(urlArray){
+    const statusArray = Promise
+        .all(urlArray
+            .map(async url => {
+                const res = await fetch(url)
+                return res.status
+    }))
+    return statusArray
 }
 
-function validateURLs(linkArray){
-    return linkArray.map(array => generateUrlsArray(array))
+function generateUrlsArray(linkArray){
+    return linkArray.map(linkObject => Object
+        .values(linkObject)
+            .join())
+}
+
+async function validateURLs(linkArray){
+    const links = linkArray.map(array => generateUrlsArray(array))
+    const statuses = Promise
+        .all(links
+            .map(async array => await checkStatus(array)))
+    return statuses
 }
 
 module.exports = validateURLs
