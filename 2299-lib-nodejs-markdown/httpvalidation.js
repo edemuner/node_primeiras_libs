@@ -20,10 +20,16 @@ function generateUrlsArray(linkArray){
 
 async function validateURLs(linkArray){
     const links = linkArray.map(array => generateUrlsArray(array))
-    const statuses = Promise
+    const statuses = await Promise
         .all(links
             .map(async array => await checkStatus(array)))
-    return statuses
+    linkArray.map((array, outerIndex) => {
+        const arrayMapper =  array.map((object, innerIndex) => {
+            object.status = statuses[outerIndex][innerIndex]
+        })
+        return arrayMapper
+    })
+    return linkArray
 }
 
 module.exports = validateURLs
