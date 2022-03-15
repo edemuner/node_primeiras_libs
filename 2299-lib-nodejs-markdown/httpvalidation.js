@@ -2,14 +2,22 @@ const fetch = (...args) => import('node-fetch')
     .then(({default: fetch}) => 
         fetch(...args))
 
+function handleErrors(error){
+    throw new Error(erro.message)
+}
+
 async function checkStatus(urlArray){
-    const statusArray = Promise
-        .all(urlArray
-            .map(async url => {
-                const res = await fetch(url)
-                return res.status
-    }))
-    return statusArray
+    try{
+        const statusArray = Promise
+            .all(urlArray
+                .map(async url => {
+                    const res = await fetch(url)
+                    return res.status
+        }))
+        return statusArray
+    }catch(erro){
+        handleErrors(erro)
+    }
 }
 
 function generateUrlsArray(linkArray){
