@@ -12,7 +12,7 @@ async function checkStatus(urlArray){
             .all(urlArray
                 .map(async url => {
                     const res = await fetch(url)
-                    return res.status
+                    return `${res.status} - ${res.statusText}`
         }))
         return statusArray
     }catch(erro){
